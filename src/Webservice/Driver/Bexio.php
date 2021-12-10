@@ -2,8 +2,8 @@
 
 namespace Trois\Bexio\Webservice\Driver;
 
-use Cake\Network\Http\Client;
-use Muffin\Webservice\AbstractDriver;
+use Cake\Http\Client;
+use Muffin\Webservice\Webservice\Driver\AbstractDriver;
 
 class Bexio extends AbstractDriver
 {
@@ -11,9 +11,9 @@ class Bexio extends AbstractDriver
   /**
   * {@inheritDoc}
   */
-  public function initialize()
+  public function initialize(): void
   {
-    $this->client(new Client([
+    $this->setClient(new Client([
       'host' => 'api.bexio.com',
       'scheme' => 'https',
       'headers' => [
