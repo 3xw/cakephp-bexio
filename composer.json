@@ -1,0 +1,24 @@
+{
+  "name": "3xw/cakephp-bexio",
+  "description": "CakePHP pages plugins",
+  "type": "cakephp-plugin",
+  "require": {
+    "php": ">=7.1",
+    "cakephp/cakephp": "^4.0",
+    "muffin/webservice": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Trois\\Bexio\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Trois\\Bexio\\Test\\": "tests",
+      "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+    }
+  }
+}
