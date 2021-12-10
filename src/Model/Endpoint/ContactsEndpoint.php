@@ -1,13 +1,13 @@
 <?php
 namespace Trois\Bexio\Model\Endpoint;
 
-class ContactsEndpoint extends ClickUpEndpoint
+class ContactsEndpoint extends BexioEndpoint
 {
-  public function initialize(array $config)
+  public function initialize(array $config): void
   {
     parent::initialize($config);
-    $this->primaryKey('id');
-    $this->displayField('name_1');
+    $this->setPrimaryKey('id');
+    $this->setDisplayField('name_1');
     //$this->setWebservice('Space', new \App\Webservice\ClickUp\SpaceWebservice);
     //debug($this->getWebservice());
   }

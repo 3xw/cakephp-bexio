@@ -5,8 +5,8 @@ namespace Trois\Bexio\Webservice;
 use Cake\Network\Http\Response;
 use Cake\Utility\Hash;
 use Muffin\Webservice\Model\Endpoint;
-use Muffin\Webservice\Query;
-use Muffin\Webservice\ResultSet;
+use Muffin\Webservice\Datasource\Query;
+use Muffin\Webservice\Datasource\ResultSet;
 use Muffin\Webservice\Webservice\Webservice;
 
 /**
@@ -27,7 +27,7 @@ class BexioWebservice extends Webservice
   */
   public function getBaseUrl()
   {
-    return '/v3/' . $this->endpoint();
+    return '/3.0/' . $this->getEndpoint();
   }
 
   /**
@@ -40,18 +40,18 @@ class BexioWebservice extends Webservice
     $queryParameters = [];
 
     // Result limit has been set, add to query parameters
-    if ($query->limit()) {
-      $queryParameters['limit'] = $query->limit();
+    if ($query->clause('limit')) {
+      $queryParameters['limit'] = $query->clause('limit');
     }
 
     // Page number has been set, add to query parameters
-    if ($query->page()) {
-      $queryParameters['offset'] = $query->limit()? $query->page() * $query->limit(): $query->page() * $this->limit;
+    if ($query->clause('offset')) {
+      $queryParameters['offset'] = $query->clause('offset');
     }
 
     // Order
-    if ($query->order()) {
-      foreach($query->order() as $field => $sort) {
+    if ($query->clause('order')) {
+      foreach($query->clause('order') as $field => $sort) {
         if(is_numeric($field)) $queryParameters['order_by'] = $sort;
         else $queryParameters['order_by'] = $field.'_'.strtolower($sort);
       }
@@ -98,8 +98,8 @@ class BexioWebservice extends Webservice
 
     /* @var Response $response */
     $response = $search?
-      $this->driver()->client()->get($url, $queryParameters):
-      $this->driver()->client()->post($url, json_encode($searchBody), $queryParameters);
+      $this->getDriver()->getClient()->post($url, json_encode($searchBody), $queryParameters):
+      $this->getDriver()->getClient()->get($url, $queryParameters);
     $results = $response->getJson();
     if (!$response->isOk())
     {
@@ -108,12 +108,12 @@ class BexioWebservice extends Webservice
     }
 
     // Turn results into resources
-    $resources = $this->_transformResults($query->endpoint(), $results);
+    $resources = $this->_transformResults($query->getEndpoint(), $results);
 
     return new ResultSet($resources, count($resources));
   }
 
-  protected function _transformResults(Endpoint $endpoint, array $results)
+  protected function _transformResults(Endpoint $endpoint, array $results): array
   {
     $resources = [];
     foreach ($results as $key =>$result)
@@ -144,26 +144,24 @@ class BexioWebservice extends Webservice
     $nestedResource = $this->nestedResource($query->getOptions()['nested'])
     ) $url = $nestedResource;
 
-    switch ($query->action())
+    switch ($query->clause('action'))
     {
       case Query::ACTION_CREATE:
-      $response = $this->driver()->client()->post($url, json_encode($query->set()));
+      $response = $this->getDriver()->getClient()->post($url, json_encode($query->set()));
       break;
 
       case Query::ACTION_UPDATE:
-      $response = $this->driver()->client()->put($url, json_encode($query->set()));
+      $response = $this->getDriver()->getClient()->put($url, json_encode($query->set()));
       break;
 
       case Query::ACTION_DELETE:
-      $response = $this->driver()->client()->delete($url);
+      $response = $this->getDriver()->getClient()->delete($url);
       break;
     }
 
     if (!$response->isOk())
     {
-      debug($response);
-      debug($response->getStringBody());
-      throw new \Exception($response->getJson()['err']);
+      throw new \Exception($response->getJson()['message']);
     }
 
     return $this->_transformResource($query->endpoint(), $response->getJson());

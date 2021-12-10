@@ -17,8 +17,9 @@ class Bexio extends AbstractDriver
       'host' => 'api.bexio.com',
       'scheme' => 'https',
       'headers' => [
-        'Authorization' => $this->getConfig('token'),
-        'Content-Type' => 'application/json'
+        'Authorization' => 'Bearer '.$this->getConfig('token'),
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json',
       ]
     ]));
   }

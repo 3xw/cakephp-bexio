@@ -6,7 +6,7 @@ use Muffin\Webservice\Model\Endpoint;
 
 class BexioEndpoint extends Endpoint
 {
-  public static function defaultConnectionName()
+  public static function defaultConnectionName(): string
   {
     return 'bexio';
   }
