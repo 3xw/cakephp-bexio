@@ -164,7 +164,7 @@ class BexioWebservice extends Webservice
       throw new \Exception($response->getJson()['message']);
     }
 
-    return $this->_transformResource($query->endpoint(), $response->getJson());
+    return $this->_transformResource($query->getEndpoint(), $response->getJson());
   }
 
 }
