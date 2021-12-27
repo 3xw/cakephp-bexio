@@ -4,10 +4,22 @@ namespace Trois\Bexio\Model;
 
 use Cake\Datasource\RepositoryInterface;
 use Cake\Datasource\ModelAwareTrait;
+use Cake\Core\InstanceConfigTrait;
 
 class BexioModels
 {
   use ModelAwareTrait;
+  use InstanceConfigTrait;
+  /** TODO
+
+  **  Excepetion handler for 429 rate limit!
+  */
+  /*
+  protected $_defaultConfig = [
+    'service_' => 'embed',
+    'file_field' => 'path'
+  ];
+  */
 
   public function getContacts(): RepositoryInterface
   {

@@ -98,17 +98,11 @@ class BexioWebservice extends Webservice
 
     /* @var Response $response */
     $response = $search?
-      $this->getDriver()->getClient()->post($url, json_encode($searchBody), $queryParameters):
-      $this->getDriver()->getClient()->get($url, $queryParameters);
-    $results = $response->getJson();
-    if (!$response->isOk())
-    {
-      debug($response->getJson());
-      throw new \Exception($response->getJson()['message']);
-    }
+      $this->getDriver()->post($url, json_encode($searchBody), $queryParameters):
+      $this->getDriver()->get($url, $queryParameters);
 
     // Turn results into resources
-    $resources = $this->_transformResults($query->getEndpoint(), $results);
+    $resources = $this->_transformResults($query->getEndpoint(), $response->getJson());
 
     return new ResultSet($resources, count($resources));
   }
@@ -139,29 +133,24 @@ class BexioWebservice extends Webservice
   {
     $url = $this->getBaseUrl();
     if (
-    $query->getOptions() &&
-    !empty($query->getOptions()['nested']) &&
-    $nestedResource = $this->nestedResource($query->getOptions()['nested'])
+      $query->getOptions() &&
+      !empty($query->getOptions()['nested']) &&
+      $nestedResource = $this->nestedResource($query->getOptions()['nested'])
     ) $url = $nestedResource;
 
     switch ($query->clause('action'))
     {
       case Query::ACTION_CREATE:
-      $response = $this->getDriver()->getClient()->post($url, json_encode($query->set()));
+      $response = $this->getDriver()->post($url, json_encode($query->set()));
       break;
 
       case Query::ACTION_UPDATE:
-      $response = $this->getDriver()->getClient()->put($url, json_encode($query->set()));
+      $response = $this->getDriver()->put($url, json_encode($query->set()));
       break;
 
       case Query::ACTION_DELETE:
-      $response = $this->getDriver()->getClient()->delete($url);
+      $response = $this->getDriver()->delete($url);
       break;
-    }
-
-    if (!$response->isOk())
-    {
-      throw new \Exception($response->getJson()['message']);
     }
 
     return $this->_transformResource($query->getEndpoint(), $response->getJson());
