@@ -52,10 +52,9 @@ class Bexio extends AbstractDriver
   {
     $rsp = $this->getClient()->{$method}($url, $data , $options);
 
-
     if (!$rsp->isOk())
     {
-      switch($rsp->code)
+      switch($rsp->getStatusCode())
       {
         case 429: // rate limit
         debug("sleep for $this->rateLimitRetryBreak...");
@@ -63,6 +62,7 @@ class Bexio extends AbstractDriver
         return $this->_doRequest($method, $url, $data, $options);
 
         default:
+        debug($url);
         debug($rsp->getJson());
         throw new \Exception($rsp->getJson()['message']);
       }

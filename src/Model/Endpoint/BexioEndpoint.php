@@ -6,6 +6,8 @@ use Muffin\Webservice\Model\Endpoint;
 
 class BexioEndpoint extends Endpoint
 {
+  use EntityMatchingTrait;
+
   public static function defaultConnectionName(): string
   {
     return 'bexio';

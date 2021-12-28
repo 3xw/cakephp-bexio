@@ -26,6 +26,11 @@ class BexioModels
     return $this->loadModel('Trois/Bexio.Contacts', 'Endpoint');
   }
 
+  public function getContactGroups(): RepositoryInterface
+  {
+    return $this->loadModel('Trois/Bexio.ContactGroups', 'Endpoint');
+  }
+
   public function getContactsRelations(): RepositoryInterface
   {
     return $this->loadModel('Trois/Bexio.ContcatsRelations', 'Endpoint');

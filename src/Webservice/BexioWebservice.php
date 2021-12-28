@@ -64,10 +64,7 @@ class BexioWebservice extends Webservice
         switch ($field) {
           case 'id':
           default:
-          // Add the condition as search parameter
           $searchParameters[$field] = $value;
-
-          // Mark this query as a search
           $search = true;
         }
       }

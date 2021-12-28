@@ -23,6 +23,25 @@ class ContactSchema extends Schema
     $this->addColumn('nr', [
       'type' => 'string',
     ]);
+    $this->addColumn('phone_fixed', [
+      'type' => 'string',
+    ]);
+    $this->addColumn('address', [
+      'type' => 'string',
+    ]);
+    $this->addColumn('city', [
+      'type' => 'string',
+    ]);
+    $this->addColumn('postcode', [
+      'type' => 'string',
+    ]);
+
+    $this->addColumn('contact_group_ids', [
+      'type' => 'string',
+    ]);
+    $this->addColumn('country_id', [
+      'type' => 'string',
+    ]);
     $this->addColumn('contact_type_id', [
       'type' => 'integer',
     ]);
