@@ -64,6 +64,7 @@ class Bexio extends AbstractDriver
         default:
         debug($url);
         debug($rsp->getJson());
+        debug(json_decode($data));
         throw new \Exception($rsp->getJson()['message']);
       }
     }

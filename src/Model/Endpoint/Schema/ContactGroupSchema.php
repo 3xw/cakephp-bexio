@@ -17,11 +17,8 @@ class ContactGroupSchema extends Schema
       'type' => 'integer',
       'primaryKey' => true
     ]);
-    $this->addColumn('contact_id', [
-      'type' => 'integer',
-    ]);
-    $this->addColumn('contact_sub_id', [
-      'type' => 'integer',
+    $this->addColumn('name', [
+      'type' => 'string',
     ]);
   }
 }

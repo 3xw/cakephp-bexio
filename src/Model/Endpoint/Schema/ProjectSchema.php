@@ -17,6 +17,9 @@ class ProjectSchema extends Schema
       'type' => 'integer',
       'primaryKey' => true
     ]);
+    $this->addColumn('name', [
+      'type' => 'string',
+    ]);
     $this->addColumn('pr_state_id', [
       'type' => 'integer',
     ]);

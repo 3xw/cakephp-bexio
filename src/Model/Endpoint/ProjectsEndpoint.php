@@ -1,7 +1,7 @@
 <?php
 namespace Trois\Bexio\Model\Endpoint;
 
-class UsersEndpoint extends BexioEndpoint
+class ProjectsEndpoint extends BexioEndpoint
 {
   public function initialize(array $config): void
   {

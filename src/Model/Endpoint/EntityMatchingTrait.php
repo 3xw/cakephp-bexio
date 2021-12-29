@@ -15,19 +15,19 @@ trait EntityMatchingTrait
 
   public $ressources = [];
 
-  public function convertData(array $data, string $model, array $associations = []): array
+  public function convertData(array $data, string $model, array $options = []): array
   {
     return $data;
   }
 
-  public function newEntityFromCakeEntity(array $data, string $model, array $associations = []): Resource
+  public function newEntityFromCakeEntity(array $data, string $model, array $options = []): Resource
   {
-    return $this->newEntity($this->convertData($data, $model, $associations));
+    return $this->newEntity($this->convertData($data, $model, $options));
   }
 
-  public function patchFromCakeEntity(Resource $res, array $data, string $model, array $associations = []): Resource
+  public function patchFromCakeEntity(Resource $res, array $data, string $model, array $options = []): Resource
   {
-    return $this->patchEntity($res, $this->convertData($data, $model, $associations));
+    return $this->patchEntity($res, $this->convertData($data, $model, $options));
   }
 
   public function getBexioMatches(): Table
@@ -49,26 +49,26 @@ trait EntityMatchingTrait
     return $this->find()->where(['id' => $id])->first();
   }
 
-  public function saveFromCakeEntity(EntityInterface $entity, string $model, array $associations = [])
+  public function saveFromCakeEntity(EntityInterface $entity, string $model, array $options = [])
   {
     // create
-    if($entity->isNew()) return $this->newFromEntity($entity, $model, $associations);
-    if(!$match = $this->findMatch($entity, $model)) return $this->newFromEntity($entity, $model, $associations);
+    if($entity->isNew()) return $this->newFromEntity($entity, $model, $options);
+    if(!$match = $this->findMatch($entity, $model)) return $this->newFromEntity($entity, $model, $options);
 
     // get ressource form cache or from API
     if(!$res = $this->findRessource($match->bexio_id)) throw new \Exception("Unable to retrive ressource for $model: (id) $match->bexio_id");
 
     // update if needed
-    $res = $this->patchFromCakeEntity($res, $entity->toArray(), $model, $associations);
+    $res = $this->patchFromCakeEntity($res, $entity->toArray(), $model, $options);
     if( $entity->isDirty() && !$res = $this->save($res)) return false;
 
     Hash::insert($this->ressources, $match->bexio_id, $res);
     return [$res, $match];
   }
 
-  public function newFromEntity(EntityInterface $entity, string $model, array $associations = [])
+  public function newFromEntity(EntityInterface $entity, string $model, array $options = [])
   {
-    $res = $this->newEntityFromCakeEntity($entity->toArray(), $model, $associations);
+    $res = $this->newEntityFromCakeEntity($entity->toArray(), $model, $options);
     if(!$res = $this->save($res)) return false;
     $match = $this->saveMatch($entity, $model, $res);
     return [$res, $match];
