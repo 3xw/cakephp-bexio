@@ -50,8 +50,9 @@ class Bexio extends AbstractDriver
 
   protected function _doRequest(string $method, string $url, $data, $options): Response
   {
+    debug("Bexio driver: $url ($method)");
     $rsp = $this->getClient()->{$method}($url, $data , $options);
-
+    // debug("Bexio driver: $url ($method): ".$rsp->isOk());
     if (!$rsp->isOk())
     {
       switch($rsp->getStatusCode())

@@ -16,5 +16,9 @@ class ProjectTypesWebservice extends BexioWebservice
     parent::initialize();
 
     $this->setEndpoint('pr_project_type');
+
+    $this->addNestedResource('/2.0/pr_project_type/:id', [
+      'id',
+    ]);
   }
 }

@@ -22,6 +22,7 @@ trait EntityMatchingTrait
 
   public function newEntityFromCakeEntity(array $data, string $model, array $options = []): Resource
   {
+    debug("EntityMatchingTrait: newEntityFromCakeEntity $model");
     return $this->newEntity($this->convertData($data, $model, $options));
   }
 
@@ -55,8 +56,11 @@ trait EntityMatchingTrait
     if($entity->isNew()) return $this->newFromEntity($entity, $model, $options);
     if(!$match = $this->findMatch($entity, $model)) return $this->newFromEntity($entity, $model, $options);
 
+
     // get ressource form cache or from API
     if(!$res = $this->findRessource($match->bexio_id)) throw new \Exception("Unable to retrive ressource for $model: (id) $match->bexio_id");
+    //debug("EntityMatchingTrait: saveFromCakeEntity");
+    //debug($res);
 
     // update if needed
     $res = $this->patchFromCakeEntity($res, $entity->toArray(), $model, $options);

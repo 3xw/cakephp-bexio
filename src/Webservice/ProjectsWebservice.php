@@ -16,5 +16,10 @@ class ProjectsWebservice extends BexioWebservice
     parent::initialize();
 
     $this->setEndpoint('pr_project');
+
+    $this->addNestedResource('/2.0/pr_project/:id', [
+      'id',
+    ]);
+
   }
 }

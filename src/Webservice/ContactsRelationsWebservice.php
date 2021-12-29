@@ -11,5 +11,9 @@ class ContactsRelationsWebservice extends BexioWebservice
     parent::initialize();
 
     $this->setEndpoint('contact_relation');
+
+    $this->addNestedResource('/3.0/contact_relation/:id', [
+      'id',
+    ]);
   }
 }
