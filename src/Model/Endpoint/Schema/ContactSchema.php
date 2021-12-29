@@ -17,13 +17,25 @@ class ContactSchema extends Schema
       'type' => 'integer',
       'primaryKey' => true
     ]);
-    $this->addColumn('name_1', [
-      'type' => 'string',
-    ]);
     $this->addColumn('nr', [
       'type' => 'string',
     ]);
+    $this->addColumn('title_id', [
+      'type' => 'integer',
+    ]);
+    $this->addColumn('name_1', [
+      'type' => 'string',
+    ]);
+    $this->addColumn('name_2', [
+      'type' => 'string',
+    ]);
     $this->addColumn('phone_fixed', [
+      'type' => 'string',
+    ]);
+    $this->addColumn('phone_mobile', [
+      'type' => 'string',
+    ]);
+    $this->addColumn('mail', [
       'type' => 'string',
     ]);
     $this->addColumn('address', [
@@ -35,6 +47,7 @@ class ContactSchema extends Schema
     $this->addColumn('postcode', [
       'type' => 'string',
     ]);
+
 
     $this->addColumn('contact_group_ids', [
       'type' => 'string',

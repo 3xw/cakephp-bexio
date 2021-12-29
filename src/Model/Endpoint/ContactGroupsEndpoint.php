@@ -13,11 +13,4 @@ class ContactGroupsEndpoint extends BexioEndpoint
     //$this->setWebservice('Space', new \App\Webservice\ClickUp\SpaceWebservice);
     //debug($this->getWebservice());
   }
-
-  public function convertData(array $data, string $model, array $associations = []): array
-  {
-    return [
-      'name' => $data['name']
-    ];
-  }
 }
