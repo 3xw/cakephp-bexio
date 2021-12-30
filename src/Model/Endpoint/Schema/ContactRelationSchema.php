@@ -4,7 +4,7 @@ namespace Trois\Bexio\Model\Endpoint\Schema;
 
 use Muffin\Webservice\Model\Schema;
 
-class getContactsRelationSchema extends Schema
+class ContactRelationSchema extends Schema
 {
   /**
   * {@inheritDoc}

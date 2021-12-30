@@ -43,8 +43,11 @@ class BexioEndpoint extends Endpoint
     // hande response
     if (!$result) return false;
 
+
+    if (($resource->isNew()) && ($result instanceof EntityInterface)) $result->setNew(true);
+
     // after event!
-    $event = $this->dispatchEvent('Model.afterSaveCommit', compact('resource', 'options'));
+    $event = $this->dispatchEvent('Model.afterSaveCommit', compact('result', 'options'));
     if ($event->isStopped()) return $event->result;
 
     if (($resource->isNew()) && ($result instanceof EntityInterface)) return $result;

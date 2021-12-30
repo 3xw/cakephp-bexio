@@ -59,12 +59,13 @@ trait EntityMatchingTrait
 
     // get ressource form cache or from API
     if(!$res = $this->findRessource($match->bexio_id)) throw new \Exception("Unable to retrive ressource for $model: (id) $match->bexio_id");
-    //debug("EntityMatchingTrait: saveFromCakeEntity");
-    //debug($res);
 
     // update if needed
-    $res = $this->patchFromCakeEntity($res, $entity->toArray(), $model, $options);
-    if( $entity->isDirty() && !$res = $this->save($res)) return false;
+    if($entity->isDirty())
+    {
+      $res = $this->patchFromCakeEntity($res, $entity->toArray(), $model, $options);
+      if(!$res = $this->save($res)) return false;
+    }
 
     Hash::insert($this->ressources, $match->bexio_id, $res);
     return [$res, $match];
