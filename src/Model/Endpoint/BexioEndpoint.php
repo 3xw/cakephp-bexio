@@ -43,7 +43,7 @@ class BexioEndpoint extends Endpoint
     $data = $resource->extract($this->getSchema()->columns(), true);
 
     if($resource->isNew()) $query = $this->query()->create();
-    else $query = $query = $this->query()->update();
+    else $query = $query = $this->query()->update()->where(['id' => $data['id']]);
     $query->set($data);
     $query->applyOptions($options->getArrayCopy()); // differs from original
 

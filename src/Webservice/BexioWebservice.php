@@ -140,7 +140,6 @@ class BexioWebservice extends Webservice
     if(!empty($query->getOptions()['nested'])) $nested = $query->getOptions()['nested'];
     if ($nested && $nestedResource = $this->nestedResource($nested)) $url = $nestedResource;
 
-
     switch ($query->clause('action'))
     {
       case Query::ACTION_CREATE:
