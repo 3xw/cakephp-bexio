@@ -95,8 +95,8 @@ class BexioWebservice extends Webservice
 
     /* @var Response $response */
     $response = $search?
-      $this->getDriver()->post($url, json_encode($searchBody), $queryParameters):
-      $this->getDriver()->get($url, $queryParameters);
+    $this->getDriver()->post($url, json_encode($searchBody), $queryParameters):
+    $this->getDriver()->get($url, $queryParameters);
 
     // Turn results into resources
     $resources = $this->_transformResults($query->getEndpoint(), $response->getJson());
@@ -126,14 +126,20 @@ class BexioWebservice extends Webservice
     return $this->_write($query, $options);
   }
 
+  protected function _executeDeleteQuery(Query $query, array $options = [])
+  {
+    return $this->_write($query, $options);
+  }
+
   protected function _write(Query $query, array $options = [])
   {
     $url = $this->getBaseUrl();
-    if (
-      $query->getOptions() &&
-      !empty($query->getOptions()['nested']) &&
-      $nestedResource = $this->nestedResource($query->getOptions()['nested'])
-    ) $url = $nestedResource;
+
+    $nested = false;
+    if ($query->clause('where')) $nested = $query->clause('where');
+    if(!empty($query->getOptions()['nested'])) $nested = $query->getOptions()['nested'];
+    if ($nested && $nestedResource = $this->nestedResource($nested)) $url = $nestedResource;
+
 
     switch ($query->clause('action'))
     {

@@ -22,7 +22,6 @@ trait EntityMatchingTrait
 
   public function newEntityFromCakeEntity(array $data, string $model, array $options = []): Resource
   {
-    debug("EntityMatchingTrait: newEntityFromCakeEntity $model");
     return $this->newEntity($this->convertData($data, $model, $options));
   }
 
@@ -64,7 +63,7 @@ trait EntityMatchingTrait
     if($entity->isDirty())
     {
       $res = $this->patchFromCakeEntity($res, $entity->toArray(), $model, $options);
-      if(!$res = $this->save($res)) return false;
+      if(!$res = $this->save($res, $options)) return false;
     }
 
     Hash::insert($this->ressources, $match->bexio_id, $res);
@@ -74,7 +73,7 @@ trait EntityMatchingTrait
   public function newFromEntity(EntityInterface $entity, string $model, array $options = [])
   {
     $res = $this->newEntityFromCakeEntity($entity->toArray(), $model, $options);
-    if(!$res = $this->save($res)) return false;
+    if(!$res = $this->save($res, $options)) return false;
     $match = $this->saveMatch($entity, $model, $res);
     return [$res, $match];
   }

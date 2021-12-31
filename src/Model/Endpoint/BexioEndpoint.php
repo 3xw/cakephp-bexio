@@ -9,9 +9,19 @@ class BexioEndpoint extends Endpoint
 {
   use EntityMatchingTrait;
 
+  public $defaultUserId = 1;
+
   public static function defaultConnectionName(): string
   {
     return 'bexio';
+  }
+
+  public function patchEntity(EntityInterface $entity, array $data, array $options = []): EntityInterface
+  {
+    $marshaller = $this->marshaller();
+    if(empty($data['user_id'])) $data['user_id'] = $this->defaultUserId;
+
+    return $marshaller->merge($entity, array_merge($entity->toArray(), $data), $options);
   }
 
   public function save(EntityInterface $resource, $options = [])
