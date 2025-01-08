@@ -1,4 +1,4 @@
-<?
+<?php
 namespace Trois\Bexio\Utility;
 use \Cake\Datasource\ModelAwareTrait;
 
