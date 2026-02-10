@@ -38,7 +38,7 @@ class ContactSchema extends Schema
     $this->addColumn('mail', [
       'type' => 'string',
     ]);
-    $this->addColumn('address', [
+    $this->addColumn('street_name', [
       'type' => 'string',
     ]);
     $this->addColumn('city', [
