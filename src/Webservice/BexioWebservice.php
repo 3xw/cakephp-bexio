@@ -27,7 +27,7 @@ class BexioWebservice extends Webservice
   */
   public function getBaseUrl()
   {
-    return '/3.0/' . $this->getEndpoint();
+    return '/2.0/' . $this->getEndpoint();
   }
 
   /**
