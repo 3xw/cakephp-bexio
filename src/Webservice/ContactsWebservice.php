@@ -12,7 +12,7 @@ class ContactsWebservice extends BexioWebservice
 
     $this->setEndpoint('contact');
 
-    $this->addNestedResource('/3.0/contact/:id', [
+    $this->addNestedResource('/2.0/contact/:id', [
       'id',
     ]);
   }
