@@ -150,6 +150,11 @@ class BexioWebservice extends Webservice
     // Remove null values from data before sending to Bexio
     $data = $this->_removeNullValues($query->set());
 
+    // Remove title_id field for contact edit actions
+    if ($query->clause('action') === Query::ACTION_UPDATE && $this->getEndpoint() === 'contact') {
+      unset($data['title_id']);
+    }
+
     switch ($query->clause('action'))
     {
       case Query::ACTION_CREATE:
