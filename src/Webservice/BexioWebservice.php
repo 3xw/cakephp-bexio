@@ -84,6 +84,10 @@ class BexioWebservice extends Webservice
       $searchBody = [];
       foreach ($searchParameters as $parameter => $value)
       {
+        // Skip null values in search parameters
+        if ($value === null) {
+          continue;
+        }
         $terms = explode(' ', $parameter);
         $searchBody[] = [
           'field' => $terms[0],
@@ -91,6 +95,9 @@ class BexioWebservice extends Webservice
           'criteria' => empty($terms[1])? '=': strtolower($terms[1])
         ];
       }
+
+      // Remove null values from search body before encoding
+      $searchBody = $this->_removeNullValues($searchBody);
     }
 
     /* @var Response $response */
@@ -140,14 +147,17 @@ class BexioWebservice extends Webservice
     if(!empty($query->getOptions()['nested'])) $nested = $query->getOptions()['nested'];
     if ($nested && $nestedResource = $this->nestedResource($nested)) $url = $nestedResource;
 
+    // Remove null values from data before sending to Bexio
+    $data = $this->_removeNullValues($query->set());
+
     switch ($query->clause('action'))
     {
       case Query::ACTION_CREATE:
-      $response = $this->getDriver()->post($url, json_encode($query->set()));
+      $response = $this->getDriver()->post($url, json_encode($data));
       break;
 
       case Query::ACTION_UPDATE:
-      $response = $this->getDriver()->put($url, json_encode($query->set()));
+      $response = $this->getDriver()->put($url, json_encode($data));
       break;
 
       case Query::ACTION_DELETE:
@@ -156,6 +166,31 @@ class BexioWebservice extends Webservice
     }
 
     return $this->_transformResource($query->getEndpoint(), $response->getJson());
+  }
+
+  /**
+   * Recursively remove null values from an array
+   *
+   * @param array $data The data array to filter
+   * @return array The filtered array without null values
+   */
+  protected function _removeNullValues(array $data): array
+  {
+    $filtered = [];
+    foreach ($data as $key => $value) {
+      if ($value === null) {
+        continue;
+      }
+      if (is_array($value)) {
+        $value = $this->_removeNullValues($value);
+        if (!empty($value)) {
+          $filtered[$key] = $value;
+        }
+      } else {
+        $filtered[$key] = $value;
+      }
+    }
+    return $filtered;
   }
 
 }
